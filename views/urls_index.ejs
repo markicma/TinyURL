@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <% include ./partials/_header.ejs %>
+  <body>
+    <h3>Tiny URLs</h3>
+    <% for (const key in urls) { %>
+      <form method="POST" action="/urls/<%= key %>/delete">
+        <p>
+          <%= key + " -> " + urls[key] %>
+          <a href="/urls/<%= key %>" style="margin-right:15px; margin-left: 15px;"> Edit </a>
+          <input type="submit" value="Delete" />
+        </p>
+      </form>
+    <% } %>
+    <a href='/urls/new'>Shorten a new URL</a>
+  </body>
+</html>
