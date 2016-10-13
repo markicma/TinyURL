@@ -3,7 +3,7 @@
   <% if (users[user_id]) { %>
     <form action="/logout" method="POST">
       <p>
-        <%= users[user_id].email %>
+        Hello, <%= users[user_id].email %>
         <input type="submit" value="Logout" />
       </p>
     </form>

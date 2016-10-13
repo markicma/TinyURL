@@ -1,13 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
   <head></head>
-  <body style="font-size:20px; padding:150px;">
-    <% include partials/_header %>
-    <form action="/urls" method="POST" style="margin:150px;">
-      <label for="longURL">Enter a URL:</label>
-      <input id="longURL" type="text" name="longURL" placeholder="http://" style="width:300px">
-      <input type="submit" value="Submit">
-    </form>
-    <a href="/urls"> See all urls </a>
+  <body>
+    <% if (users[user_id]) { %>
+      <form action="/urls" method="POST" style="margin:150px;" style="font-size:20px; padding:150px;">
+        <label for="longURL">Enter a URL:</label>
+        <input id="longURL" type="text" name="longURL" placeholder="http://" style="width:300px">
+        <input type="submit" value="Submit">
+      </form>
+      <a href="/urls" > See my urls </a>
+    <% } else { %>
+      <p>To add a new post either <a href="/register">Sign Up</a> or </p>
+      <p>Login: </p>
+      <form action="/login" method="POST" style="margin-bottom: 15px;">
+        <input type="email" name="email" placeholder="Email"/>
+        <input type="password" name="password" placeholder="Password" />
+        <input type="submit" value="Sign In" />
+      </form>
+      <a href="/urls" > See all urls </a>
+    <% } %>
+
   </body>
 </html>
