@@ -3,11 +3,14 @@ const express = require('express');
 const app = express();
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const _ = require("lodash");
 const PORT = process.env.PORT || 8080;
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser())
+
+let users = {};
 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
@@ -21,14 +24,16 @@ app.get("/", (req, res) => {
 app.get("/urls", (req, res) => {
   let templateVars = {
     urls: urlDatabase,
-    username: req.cookies["username"]
+    user_id: req.cookies["user_id"],
+    users: users
   };
   res.render("urls_index", templateVars);
 })
 
 app.get("/urls/new", (req, res) => {
   let templateVars = {
-    username: req.cookies["username"]
+    user_id: req.cookies["user_id"],
+    users: users
   }
   res.render("urls_new", templateVars);
 });
@@ -43,7 +48,8 @@ app.get("/urls/:id", (req, res) => {
   let templateVars = {
     shortURL: req.params.id,
     longURL: urlDatabase[req.params.id],
-    username: req.cookies["username"]
+    user_id: req.cookies["user_id"],
+    users: users
   };
   res.render("urls_show", templateVars);
 });
@@ -63,14 +69,45 @@ app.post("/urls/:id/update", (req, res) => {
   res.redirect("/urls")
 })
 
-app.post("/login", (req, res) => {
-  res.cookie("username", req.body.username);
-  res.redirect("/");
+app.post("/login", (req, res, next) => {
+  const key = _.findKey(users, { 'email': req.body.email });
+  if (!users[key] || users[key].password !== req.body.password) {
+    res.status = 403;
+    next(Error('403 Error'))
+  } else {
+    res.cookie("user_id", key);
+    res.redirect("/urls");
+  }
 })
 
 app.post("/logout", (req, res) => {
-  res.clearCookie("username");
-  res.redirect("/");
+  res.clearCookie("user_id");
+  res.redirect("/urls");
+})
+
+app.get("/register", (req, res) => {
+  templateVars = {
+    user_id: req.cookies.user_id,
+    users: users
+  }
+  res.render("register_form", templateVars);
+})
+
+app.post("/register", (req, res, next) => {
+  const key = _.findKey(users, { 'email': req.body.email });
+  if (users[key] || !req.body.email || !req.body.password) {
+    res.status = 400;
+    next(Error('400 Error'));
+  } else {
+    const rand = generateRandomString();
+    users[rand] = {
+      id: rand,
+      email: req.body.email,
+      password: req.body.password
+    };
+    res.cookie("user_id", rand);
+    res.redirect("/urls");
+  }
 })
 
 app.listen(PORT, () => {

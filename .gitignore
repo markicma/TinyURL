@@ -1,3 +1,4 @@
 /node_modules/
 .DS_Store
-/view/partials/.DS_Store
+/views/.DS_Store
+/npm-debug.log
