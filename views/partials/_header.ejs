@@ -2,16 +2,13 @@
   <title>TinyURL</title>
   <% if (users[user_id]) { %>
     <form action="/logout" method="POST">
-      <p>
-        Hello, <%= users[user_id].email %>
+        <%= users[user_id].email %>
+        <a href="/urls">My Links</a>
         <input type="submit" value="Logout" />
-      </p>
     </form>
   <% } else { %>
     <form action="/login" method="POST">
-      <input type="email" name="email" placeholder="Email"/>
-      <input type="password" name="password" placeholder="Password" />
-      <input type="submit" value="Sign In" />
+      <a href="/login">Login</a>
       <a href="/register">Register</a>
     </form>
   <% } %>

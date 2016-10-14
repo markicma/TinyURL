@@ -2,28 +2,18 @@
 <html lang="en">
   <% include ./partials/_header.ejs %>
   <body>
-    <% if (users[user_id]) { %>
-      <h3><%= users[user_id].email %>'s Tiny URL's</h3>
+      <h3>My Tiny URL's</h3>
       <% for (const key in users[user_id].links) { %>
-        <form method="POST" action="/urls/<%= key %>/delete">
-          <p>
+        <div style="display: block; margin-bottom: 15px;">
+          <form method="GET" action="/urls/<%= key %>" style="display: inline;">
             <%= key + " -> " + users[user_id].links[key] %>
-            <a href="/urls/<%= key %>" style="margin-right:15px; margin-left: 15px;"> Edit </a>
-            <input type="submit" value="Delete" />
-          </p>
-        </form>
+            <input type="submit" value="Edit" />
+          </form>
+          <form method="POST" action="/urls/<%= key %>/delete" style="display: inline;">
+              <input type="submit" value="Delete" />
+          </form>
+        </div>
       <% } %>
-      <a href='/urls/new'>Shorten a new URL</a>
-    <% } else { %>
-      <p>Please log in or register to shorten a URL</p>
-      <h3>Tiny URLs</h3>
-      <% for (const key in urlDatabase) { %>
-        <form method="POST" action="/urls/<%= key %>/delete">
-          <p>
-            <%= key + " -> " + urlDatabase[key] %>
-          </p>
-        </form>
-      <% } %>
-    <% } %>
+      <a href='/urls/new' style="display: inline-block;">Shorten a new URL</a>
   </body>
 </html>

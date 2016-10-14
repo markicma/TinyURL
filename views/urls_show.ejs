@@ -2,18 +2,14 @@
 <html lang="en">
   <% include ./partials/_header.ejs %>
   <body>
-    <% if (users[user_id]) { %>
-      <h2>Short URL: <%= shortURL %></h2>
-      <h3>Long URL: <%= longURL %></h2>
-      <form method="POST" action="/urls/<%= shortURL %>/update" style="margin-bottom:15px;">
-        <input name="newURL" type="text" placeholder="http://"/>
-        <input type="Submit" value="Update" />
-      </form>
-      <a href="/urls"> See my urls </a>
-    <% } else { %>
-      <h2>Short URL: <%= shortURL %></h2>
-      <h3>Long URL: <%= longURL %></h2>
-      <a href="/urls"> See all urls </a>
-    <% } %>
+    <h2>Short URL: <%= shortURL %></h2>
+    <h3>Long URL: <%= longURL %></h2>
+    <form method="POST" action="/urls/<%= shortURL %>" style="display: inline;">
+      <input name="newURL" type="text" placeholder="http://"/>
+      <input type="Submit" value="Update" />
+    </form>
+    <form method="POST" action="/urls/<%= shortURL %>/delete" style="display: inline;">
+      <input type="Submit" value="Delete" />
+    </form>
   </body>
 </html>
