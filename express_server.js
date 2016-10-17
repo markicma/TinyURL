@@ -142,7 +142,7 @@ app.post("/urls", (req, res) => {
 // an error message shows up on the page. If the user is logged in and the tinyURL
 // belongs to that user, the cookie is stored in the user_id variable and the
 // value in the url database corresponding to the id parameter is updated to the
-// new url that was submitted in the form. The value in the corresponding 
+// new url that was submitted in the form. The value in the corresponding
 // user's links object is also updated to the new url that was submitted. The
 // user is then redirected to the /urls endpoint.
 app.post("/urls/:id", (req, res) => {
@@ -156,10 +156,14 @@ app.post("/urls/:id", (req, res) => {
     res.statusCode = 403;
     res.send("This short URL isn't available to update");
   } else {
-    const user_id = req.session.user_id;
-    urlDatabase[req.params.id] = req.body.newURL;
-    users[user_id].links[req.params.id] = req.body.newURL;
-    res.redirect("/urls");
+    if (req.body.newURL){
+      const user_id = req.session.user_id;
+      urlDatabase[req.params.id] = req.body.newURL;
+      users[user_id].links[req.params.id] = req.body.newURL;
+      res.redirect("/urls");
+    } else {
+      res.redirect("/urls");
+    }
   }
 })
 
