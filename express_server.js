@@ -162,7 +162,8 @@ app.post("/urls/:id", (req, res) => {
       users[user_id].links[req.params.id] = req.body.newURL;
       res.redirect("/urls");
     } else {
-      res.redirect("/urls");
+      res.statusCode = 400;
+      res.send("Must input a value to update link")
     }
   }
 })
